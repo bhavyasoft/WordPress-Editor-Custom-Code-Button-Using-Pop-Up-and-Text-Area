@@ -1,0 +1,44 @@
+function custom_quicktags() {
+
+    if ( wp_script_is( 'quicktags' ) ) {
+    ?>
+    <script type="text/javascript">
+	
+    QTags.addButton( 'eg_callback', 'Custom Code', css_callback );
+
+	var code = '';
+        	
+    function css_callback(){
+		
+		var win = window.open('', 'codewindow', 'width=500,height=150,location=0,menubar=0,status=0,titlebar=0,toolbar=0');
+		var doc = win.document;
+		doc.write('<!doctype html><html><head><title>Input Custom Code</title></head>');
+		doc.write('<body>');
+		doc.write('<textarea id="code" rows="6" cols="60" placeholder="Write code here..." style="width:100%"></textarea>');
+		doc.write('<input type="button" value="Insert" onclick="opener.insert(document.getElementById(\'code\').value);window.close();" />');
+		doc.write('</body></html>');
+		doc.close();
+				
+    }//
+	
+	function insert(code) {
+			
+		if ( code && code !== '' ) {
+		
+			var str = '';
+			var str = '<pre class="customcode">\r';
+			var str = str + code;
+			
+			var str = str + '\r</pre>\r';
+			
+			QTags.insertContent(str);
+			
+		}
+			
+	}
+			
+    </script>
+    <?php
+    }
+}
+add_action( 'admin_print_footer_scripts', 'custom_quicktags' );
